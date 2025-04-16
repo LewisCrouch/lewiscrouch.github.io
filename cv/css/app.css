@@ -447,6 +447,10 @@ nav .button-link a:hover {
 		.page header .name {
 			padding-top: 1rem;
 		}
+
+		.page article h2 {
+			font-size: 2rem;
+		}
 	}
 }
 

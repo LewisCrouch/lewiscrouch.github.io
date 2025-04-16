@@ -280,6 +280,10 @@ nav .button-link a:hover {
 	margin-top: 1rem;
 }
 
+.page article p {
+	margin-bottom: 0;
+}
+
 .page article .badge {
 	font-size: 1rem;
 	font-weight: 400;

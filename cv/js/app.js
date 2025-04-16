@@ -1,19 +1,16 @@
 const navPane = document.querySelector("#nav_pane");
-let headings = { };
+let headings = {};
 
 this.setupNavPane();
 this.setupScrollspy();
 this.setupAutoPageNumbering();
 
-function setupNavPane()
-{
-	document.querySelectorAll(".page h1, .page h2, .page h3, .page h4").forEach((heading) =>
-	{
+function setupNavPane() {
+	document.querySelectorAll(".page h1, .page h2, .page h3, .page h4").forEach((heading) => {
 		// Fetch the heading text and sanitize it for use as an ID
 		let prefix = "heading";
 		const text = heading.firstChild.nodeValue.replace(/\W/g, '_');;
-		switch(heading.tagName.toLowerCase())
-		{
+		switch (heading.tagName.toLowerCase()) {
 			case "h1": prefix = "title"; break;
 			case "h3": prefix = "subheading"; break;
 			case "h4": prefix = "subheading2"; break;
@@ -22,14 +19,13 @@ function setupNavPane()
 
 		// Make sure that the ID is unique
 		let id = `${prefix}-${text}`;
-		if(document.querySelector(`#${id}`))
-		{
+		if (document.querySelector(`#${id}`)) {
 			let count = 2;
-			while(document.querySelector(`#${id}${count}`)) count++;
+			while (document.querySelector(`#${id}${count}`)) count++;
 			id += count;
 		}
 		heading.setAttribute("id", id);
-		
+
 		// Store the scroll offset of the heading element for later use (scrollspy)
 		headings[id] = getOffsetTop(heading);
 
@@ -40,8 +36,7 @@ function setupNavPane()
 		a.setAttribute("href", `#${id}`);
 		a.setAttribute("title", heading.firstChild.nodeValue);
 		a.textContent = heading.firstChild.nodeValue;
-		a.addEventListener("click", () =>
-		{
+		a.addEventListener("click", () => {
 			highlightCurrentHeading();
 		});
 		li.appendChild(a);
@@ -51,67 +46,55 @@ function setupNavPane()
 	// Add expand / collapse toggle functionality to the nav pane when the nav button is clicked
 	let navButton = document.querySelector("#nav_button");
 	let navPaneContainer = document.querySelector("#nav_pane_container");
-	navButton.addEventListener("click", (e, el) =>
-	{
+	navButton.addEventListener("click", (e, el) => {
 		navButton.dataset["expanded"] === "true" ? navButton.dataset["expanded"] = "false" : navButton.dataset["expanded"] = "true";
 
-		if(navPaneContainer.classList.contains("nav-pane-container-expanded")) navPaneContainer.classList.remove("nav-pane-container-expanded");
+		if (navPaneContainer.classList.contains("nav-pane-container-expanded")) navPaneContainer.classList.remove("nav-pane-container-expanded");
 		else navPaneContainer.classList.add("nav-pane-container-expanded");
 
 		//if(navButton.dataset["expanded"] === "false") navPane.classList.add("d-none");
 		//else navPane.classList.remove("d-none");
-	})
+	});
 
 	navButton.dataset["expanded"] = "true";
 	navPaneContainer.classList.add("nav-pane-container-expanded");
 }
 
-function setupScrollspy()
-{
-	window.addEventListener("scroll", () =>
-	{
+function setupScrollspy() {
+	window.addEventListener("scroll", () => {
 		highlightCurrentHeading();
 	});
 }
 
-function setupAutoPageNumbering()
-{
+function setupAutoPageNumbering() {
 	let i = 1;
 	let pageNumberEls = document.querySelectorAll(".page-number");
-	pageNumberEls.forEach((el) =>
-	{
+	pageNumberEls.forEach((el) => {
 		el.textContent = `${i++} of ${pageNumberEls.length}`;
 	});
 }
 
 /* Helper functions */
 
-function highlightCurrentHeading()
-{
+function highlightCurrentHeading() {
 	let scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
-	for(let i in headings)
-	{
-		if (headings[i] <= scrollPosition)
-		{
+	for (let i in headings) {
+		if (headings[i] <= scrollPosition) {
 			disableNavPaneActiveLink();
 			document.querySelector(`a[href*=${i}]`).classList.add("active");
 		}
 	}
 }
 
-function disableNavPaneActiveLink()
-{
-	navPane.querySelectorAll("a").forEach((otherItem) =>
-	{
+function disableNavPaneActiveLink() {
+	navPane.querySelectorAll("a").forEach((otherItem) => {
 		otherItem.classList.remove("active");
 	});
 }
 
-function getOffsetTop(element)
-{
+function getOffsetTop(element) {
 	let offsetTop = 0;
-	while(element)
-	{
+	while (element) {
 		offsetTop += element.offsetTop;
 		element = element.offsetParent;
 	}
